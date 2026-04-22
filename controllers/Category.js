@@ -46,7 +46,9 @@ exports.showAllCategories = async (req, res) => {
 exports.categoryPageDetails = async (req, res) => {
   try {
     const { categoryId } = req.body
-
+    if(!categoryId){
+      return res.status(401).json({success:false ,message:"id category is required"})
+    }
     // Get courses for the specified category
     const selectedCategory = await Category.findById(categoryId)
       .populate({
@@ -55,6 +57,7 @@ exports.categoryPageDetails = async (req, res) => {
         populate: "ratingAndReviews",
       })
       .exec()
+
 
     console.log("SELECTED COURSE", selectedCategory)
     // Handle the case when the category is not found
